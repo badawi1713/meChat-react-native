@@ -124,25 +124,43 @@ export default class Contact extends Component {
                 activeOpacity={0.5}
                 style={{
                   height: 75,
-                  backgroundColor: '#FAF8F0',
-                  borderBottomColor: '#F4D2D2',
+                  backgroundColor: '#FFFBC9',
+                  borderBottomColor: '#bfbfbf',
                   borderBottomWidth: 1,
                   flexDirection: 'row',
                   alignItems: 'center',
                   paddingHorizontal: 10,
                 }}
                 key={data.uid}>
-                <Image
-                  source={{uri: `${data.data.urlImage}`}}
-                  style={{
-                    height: 60,
-                    width: 60,
-                    borderRadius: 40,
-                    marginRight: 20,
-                  }}
-                />
+                {data.data.imageURL === '' || null ? (
+                  <Image
+                    source={{
+                      uri:
+                        'https://www.securities-services.societegenerale.com/uploads/tx_bisgbio/default-profile.png',
+                    }}
+                    style={{
+                      backgroundColor: '#fff',
+                      height: 60,
+                      width: 60,
+                      borderRadius: 40,
+                      marginRight: 20,
+                    }}
+                  />
+                ) : (
+                  <Image
+                    source={{uri: `${data.data.imageURL}`}}
+                    style={{
+                      backgroundColor: '#fff',
+                      height: 60,
+                      width: 60,
+                      borderRadius: 40,
+                      marginRight: 20,
+                    }}
+                  />
+                )}
+
                 <View>
-                  <Text style={{fontSize: 16}}>{data.data.name}</Text>
+                  <Text style={{fontSize: 16}}>{data.data.displayName}</Text>
                   <View style={{flexDirection: 'row'}}>
                     {data.data.status == 'offline' ? (
                       <View

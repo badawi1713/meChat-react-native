@@ -32,9 +32,20 @@ const Register = props => {
           displayName: fullname,
         });
       })
-      .then(() => {})
+      .then(async () => {
+        const uid = await firebase.auth().currentUser.uid;
+        const email = await firebase.auth().currentUser.email;
+        const ref = await firebase.database().ref(`/users/${uid}`);
+        await ref.set({
+          uid: uid,
+          email: email,
+          displayName: fullname,
+          imageURL:
+            'https://www.securities-services.societegenerale.com/uploads/tx_bisgbio/default-profile.png',
+        });
+      })
       .then(() => {
-        props.navigation.navigate('SetupProfile');
+        props.navigation.navigate('Profile');
       })
       .catch(error => {
         console.log(error);

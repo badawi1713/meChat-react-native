@@ -74,7 +74,7 @@ const SetupProfile = props => {
       <View style={styles.headerContainer}>
         <Text style={{fontSize: 30}}>Hi, {displayName}</Text>
         <Text style={{fontSize: 17, color: '#262626'}}>
-          Set up your profile first
+          Configure your profile
         </Text>
       </View>
 
@@ -85,7 +85,7 @@ const SetupProfile = props => {
             setImageURL(value);
           }}
           style={styles.inputForm}
-          placeholder="Profil Image URL"
+          placeholder="Profile Image URL"
         />
         <TextInput
           value={phoneNumber}
@@ -114,9 +114,9 @@ const SetupProfile = props => {
         />
       </View>
 
-      <View style={styles.registerButtonContainer}>
+      <View style={styles.formButtonContainer}>
         <TouchableOpacity
-          style={styles.registerButton}
+          style={styles.formSaveButton}
           onPress={updateProfileHandler}>
           <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
             Save
@@ -183,11 +183,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#B2B2B2',
   },
-  registerButtonContainer: {
+  formButtonContainer: {
     // backgroundColor: 'aqua',
     width: '100%',
   },
-  registerButton: {
+
+  formSaveButton: {
     borderWidth: 1,
     backgroundColor: '#262626',
     padding: 10,
