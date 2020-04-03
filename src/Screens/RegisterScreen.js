@@ -8,11 +8,11 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import * as firebase from 'firebase';
 
-const Register = () => {
-  const navigation = useNavigation();
+const Register = props => {
+  // const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [fullname, setFullname] = useState('');
@@ -20,7 +20,7 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const signInButtonHandler = () => {
-    navigation.navigate('Login');
+    props.navigation.navigate('Login');
   };
 
   const registerHandler = () => {
@@ -31,7 +31,11 @@ const Register = () => {
         return userCredentials.user.updateProfile({
           displayName: fullname,
         });
-      }, navigation.navigate('Login'))
+      })
+      .then(() => {})
+      .then(() => {
+        props.navigation.navigate('SetupProfile');
+      })
       .catch(error => {
         console.log(error);
         setErrorMessage(error.message);
@@ -88,7 +92,7 @@ const Register = () => {
         <TouchableOpacity
           style={styles.registerButton}
           onPress={registerHandler}>
-          <Text style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
+          <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
             Register
           </Text>
         </TouchableOpacity>
@@ -109,6 +113,11 @@ const Register = () => {
       </View>
     </SafeAreaView>
   );
+};
+
+Register.navigationOptions = {
+  //To hide the ActionBar/NavigationBar
+  headerShown: false,
 };
 
 export default Register;
@@ -144,7 +153,7 @@ const styles = StyleSheet.create({
   },
   inputForm: {
     height: 50,
-    marginVertical: 8,
+    marginBottom: 15,
     padding: 10,
     borderRadius: 10,
     fontSize: 17,
@@ -171,7 +180,9 @@ const styles = StyleSheet.create({
   },
   circleImageContainer: {width: 500, height: 210},
   circleImage: {
-    top: 10,
+    zIndex: -1,
+    position: 'absolute',
+    bottom: 5,
     width: 260,
     height: '100%',
   },

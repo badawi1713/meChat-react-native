@@ -8,18 +8,18 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
 import * as firebase from 'firebase';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Login = props => {
+  // const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
 
   const signUpButtonHandler = () => {
-    navigation.navigate('Register');
+    props.navigation.navigate('Register');
   };
 
   const loginHandler = () => {
@@ -27,7 +27,7 @@ const Login = () => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        navigation.navigate('Home');
+        props.navigation.navigate('Profile');
       })
       .catch(error => {
         setErrorMessage(error.message);
@@ -80,7 +80,7 @@ const Login = () => {
       </View>
       <View style={styles.loginButtonContainer}>
         <TouchableOpacity style={styles.loginButton} onPress={loginHandler}>
-          <Text style={{color: '#fff', fontSize: 28, textAlign: 'center'}}>
+          <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
             Sign In
           </Text>
         </TouchableOpacity>
@@ -89,7 +89,14 @@ const Login = () => {
         <Text style={{fontSize: 16, color: '#B2B2B2'}}>
           Don't have an account?
         </Text>
-        <Text style={{fontSize: 16}} onPress={signUpButtonHandler}>
+        <Text
+          style={{fontSize: 16}}
+          onPress={() => {
+            setEmail('');
+            setPassword('');
+            setErrorMessage(null);
+            signUpButtonHandler();
+          }}>
           Sign Up
         </Text>
       </View>
@@ -101,6 +108,11 @@ const Login = () => {
       </View>
     </SafeAreaView>
   );
+};
+
+Login.navigationOptions = {
+  //To hide the ActionBar/NavigationBar
+  headerShown: false,
 };
 
 export default Login;
