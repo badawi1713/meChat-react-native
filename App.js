@@ -7,6 +7,8 @@ import MapScreen from './src/Screens/MapScreen';
 import ContactScreen from './src/Screens/ContactScreen';
 import LoadingScreen from './src/Screens/LoadingScreen';
 import SetupProfileScreen from './src/Screens/SetupProfileScreen';
+import FriendProfileScreen from './src/Screens/FriendProfileScreen';
+import ChatScreen from './src/Screens/ChatScreen';
 
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -26,10 +28,43 @@ import Firebase from './src/config/firebase';
 //   },
 // );
 
-const AppTabNavigator = createBottomTabNavigator(
+const ContactStack = createStackNavigator(
+  {
+    Chat: {
+      screen: ChatScreen,
+    },
+    ChatList: {
+      screen: ContactScreen,
+    },
+  },
+  {
+    initialRouteName: 'ChatList',
+    headerMode: 'none',
+  },
+);
+
+const MapStack = createStackNavigator(
   {
     Map: {
       screen: MapScreen,
+    },
+    FriendProfile: {
+      screen: FriendProfileScreen,
+    },
+    Chat: {
+      screen: ChatScreen,
+    },
+  },
+  {
+    initialRouteName: 'Map',
+    headerMode: 'none',
+  },
+);
+
+const AppTabNavigator = createBottomTabNavigator(
+  {
+    Map: {
+      screen: MapStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
           <Icon color={tintColor} name="map" size={30} />
@@ -38,7 +73,7 @@ const AppTabNavigator = createBottomTabNavigator(
       },
     },
     Contact: {
-      screen: ContactScreen,
+      screen: ContactStack,
       navigationOptions: {
         tabBarIcon: ({tintColor}) => (
           <Icon color={tintColor} name="comments" size={30} />

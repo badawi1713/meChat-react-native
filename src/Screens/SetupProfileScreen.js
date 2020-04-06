@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
 import {
   View,
@@ -8,15 +10,20 @@ import {
   StyleSheet,
   SafeAreaView,
   ToastAndroid,
+  Platform,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as firebase from 'firebase';
+import DatePicker from 'react-native-datepicker';
 
-const SetupProfile = props => {
+const SetupProfile = (props) => {
   const [displayName, setDisplayName] = useState('');
   const [imageURL, setImageURL] = useState('');
   const [birthday, setBirthday] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [biodata, setBiodata] = useState('');
+  const [longitude, setLongitude] = useState('');
+  const [latitude, setLatitude] = useState('');
 
   useEffect(() => {
     const {displayName} = firebase.auth().currentUser;
@@ -39,6 +46,8 @@ const SetupProfile = props => {
         phoneNumber,
         birthday,
         imageURL,
+        latitude,
+        longitude,
       });
       ToastAndroid.showWithGravity(
         'Data Updated',
@@ -55,21 +64,44 @@ const SetupProfile = props => {
   const getUserData = () => {
     const uid = firebase.auth().currentUser.uid;
     let ref = firebase.database().ref(`/users/${uid}`);
-    ref.on('value', snapshot => {
+    ref.on('value', (snapshot) => {
       setImageURL(snapshot.val() != null ? snapshot.val().imageURL : '');
       setPhoneNumber(snapshot.val() != null ? snapshot.val().phoneNumber : '');
       setBirthday(snapshot.val() != null ? snapshot.val().birthday : '');
       setBiodata(snapshot.val() != null ? snapshot.val().biodata : '');
+      setLatitude(
+        snapshot.val() != null || undefined ? snapshot.val().latitude : '',
+      );
+      setLongitude(
+        snapshot.val() != null || undefined ? snapshot.val().longitude : '',
+      );
     });
+  };
+
+  const backButtonHandler = () => {
+    props.navigation.navigate('Profile');
   };
 
   return (
     <SafeAreaView style={styles.registerContainer}>
-      <View style={styles.imageContainer}>
+      {/* <View style={styles.imageContainer}>
         <Image
           style={styles.imageIcon}
           source={require('../../assets/setupProfile.png')}
         />
+      </View> */}
+      <View style={styles.header}>
+        <View style={styles.setupNavbarContainer}>
+          <TouchableOpacity activeOpacity={1} onPress={backButtonHandler}>
+            <Icon name="arrow-left" style={styles.backIcon} />
+          </TouchableOpacity>
+          <Text style={styles.navbarTitle}> Setup Profile </Text>
+          <Text style={styles.navbarTitle}>{''}</Text>
+          <Text style={styles.navbarTitle}>{''}</Text>
+          <Text style={styles.navbarTitle}>{''}</Text>
+          <Text style={styles.navbarTitle}>{''}</Text>
+          <Text style={styles.navbarTitle}>{''}</Text>
+        </View>
       </View>
       <View style={styles.headerContainer}>
         <Text style={{fontSize: 30}}>Hi, {displayName}</Text>
@@ -77,41 +109,77 @@ const SetupProfile = props => {
           Configure your profile
         </Text>
       </View>
+      <View
+        style={{
+          borderBottomWidth: 1,
+          borderColor: 'grey',
+          width: '80%',
+          paddingHorizontal: 40,
+        }}>
+        <Text>{''}</Text>
+      </View>
 
       <View style={styles.formContainer}>
-        <TextInput
-          value={imageURL}
-          onChangeText={value => {
-            setImageURL(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Profile Image URL"
-        />
-        <TextInput
-          value={phoneNumber}
-          onChangeText={value => {
-            setPhoneNumber(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Phone Number"
-        />
-        <TextInput
-          value={birthday}
-          onChangeText={value => {
-            setBirthday(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Birth Date"
-        />
-        <TextInput
-          value={biodata}
-          onChangeText={value => {
-            setBiodata(value);
-          }}
-          style={styles.inputFormBio}
-          placeholder="Bio"
-          multiline={true}
-        />
+        <View>
+          <Text style={styles.formLabel}>Profile Image URL</Text>
+          <TextInput
+            // value={imageURL}
+            onChangeText={(value) => {
+              if (value === '' || null) {
+                setImageURL(imageURL);
+              } else {
+                setImageURL(value);
+              }
+            }}
+            style={styles.inputForm}
+            placeholder="Input your profile image URL..."
+          />
+        </View>
+        <View>
+          <Text style={styles.formLabel}>Phone Number</Text>
+
+          <TextInput
+            // dataDetectorTypes={'phoneNumber'}
+            keyboardType={'phone-pad'}
+            value={phoneNumber}
+            onChangeText={(value) => {
+              setPhoneNumber(value);
+            }}
+            style={styles.inputForm}
+            placeholder="Input your phone number..."
+          />
+        </View>
+        <View>
+          <Text style={styles.formLabel}>Birth Date</Text>
+          {/* <View style={styles.inputForm}> */}
+          <DatePicker
+            date={birthday}
+            style={styles.datePicker}
+            mode="date"
+            placeholder="Select your birth date"
+            format="YYYY-MM-DD"
+            confirmBtnText="Confirm"
+            cancelBtnText="Cancel"
+            showIcon={true}
+            // eslint-disable-next-line prettier/prettier
+            onDateChange={(date) => {
+              setBirthday(date);
+            }}
+          />
+        </View>
+
+        <View>
+          <Text style={styles.formLabel}>Bio</Text>
+          <TextInput
+            value={biodata}
+            onChangeText={(value) => {
+              setBiodata(value);
+            }}
+            style={styles.inputFormBio}
+            placeholder="Input your bio..."
+            multiline={true}
+          />
+        </View>
       </View>
 
       <View style={styles.formButtonContainer}>
@@ -136,10 +204,34 @@ export default SetupProfile;
 
 const styles = StyleSheet.create({
   registerContainer: {
-    padding: 40,
     flex: 1,
     backgroundColor: 'white',
     alignItems: 'center',
+  },
+  header: {
+    backgroundColor: '#FFD700',
+    elevation: 8,
+    width: '100%',
+  },
+  setupNavbarContainer: {
+    // marginRight: 30,
+    // marginLeft: 30,
+    // paddingTop: 20,
+    // paddingBottom: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backIcon: {
+    fontSize: 24,
+    fontWeight: 'normal',
+  },
+  navbarTitle: {
+    fontSize: 24,
+    color: 'black',
+    textAlign: 'center',
   },
   imageContainer: {
     // backgroundColor: 'grey',
@@ -156,11 +248,12 @@ const styles = StyleSheet.create({
     marginTop: 35,
     width: '100%',
     textAlign: 'left',
-    // backgroundColor: 'red',
+    paddingHorizontal: 40,
   },
   formContainer: {
     marginTop: 15,
-    // backgroundColor: 'yellow',
+    paddingHorizontal: 40,
+
     width: '100%',
   },
   inputForm: {
@@ -174,10 +267,11 @@ const styles = StyleSheet.create({
     borderColor: '#B2B2B2',
   },
   inputFormBio: {
-    height: 80,
+    height: 100,
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 10,
+    // paddingTop: -10,
     fontSize: 17,
     // backgroundColor: 'yellow',
     borderWidth: 1,
@@ -185,6 +279,8 @@ const styles = StyleSheet.create({
   },
   formButtonContainer: {
     // backgroundColor: 'aqua',
+    paddingHorizontal: 40,
+
     width: '100%',
   },
 
@@ -214,4 +310,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   errorText: {textAlign: 'center', color: 'red', fontSize: 16},
+  datePicker: {
+    borderRadius: 10,
+    // marginTop: 10,
+    marginBottom: 15,
+    width: '100%',
+    // borderWidth: 'none',
+  },
+  formLabel: {
+    marginBottom: 10,
+    fontSize: 14,
+  },
 });

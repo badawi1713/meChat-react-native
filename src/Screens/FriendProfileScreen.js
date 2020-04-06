@@ -27,31 +27,28 @@ const ProfileScreen = (props) => {
   const [birthday, setBirthday] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [biodata, setBiodata] = useState('');
+  const [friendUID, setFriendUID] = useState('');
 
   useEffect(() => {
-    console.log('uid:', firebase.auth().currentUser.uid);
-    console.log('fullname', displayName);
-    console.log('image', imageURL);
     const {displayName} = firebase.auth().currentUser;
-    const getLocation = async () => {
-      await updateLocation();
-    };
-    getLocation();
     setDisplayName(displayName);
-    getUserData();
+    getFriendData();
+    // updateLocation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const signOutHandler = () => {
-    firebase.auth().signOut();
+  const chatIconHandler = () => {
+    props.navigation.push('Chat', {
+      uid: props.navigation.getParam('uid'),
+    });
   };
 
-  const setupProfileHandler = () => {
-    props.navigation.navigate('SetupProfile');
+  const backIconHanlder = () => {
+    props.navigation.navigate('Map');
   };
 
-  const getUserData = () => {
-    const uid = firebase.auth().currentUser.uid;
+  const getFriendData = () => {
+    const uid = props.navigation.getParam('uid');
     let ref = firebase.database().ref(`/users/${uid}`);
     ref.on('value', (snapshot) => {
       setImageURL(snapshot.val() != null || '' ? snapshot.val().imageURL : '');
@@ -61,87 +58,27 @@ const ProfileScreen = (props) => {
         snapshot.val() != null || '' ? snapshot.val().phoneNumber : '',
       );
       setBiodata(snapshot.val() != null || '' ? snapshot.val().biodata : '');
+      setLatitude(snapshot.val() != null || '' ? snapshot.val().latitude : '');
+      setLongitude(
+        snapshot.val() != null || '' ? snapshot.val().longitude : '',
+      );
     });
-  };
-
-  const updateLocation = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: 'MeChat Location Permission',
-        message: 'MeChat needs access to your location',
-      },
-    );
-    if (granted) {
-      await Geolocation.getCurrentPosition(
-        async (position) => {
-          console.log('Current Location', JSON.stringify(position));
-          // await this.setState({
-          //   latitude: position.coords.latitude.toString(),
-          //   longitude: position.coords.longitude.toString(),
-          // });
-          setLatitude(position.coords.latitude.toString());
-          setLongitude(position.coords.longitude.toString());
-        },
-        (error) => {
-          console.log(error.code, error.message);
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 15000,
-          maximumAge: 10000,
-        },
-      );
-
-      this.watchID = Geolocation.watchPosition((position) => {
-        let region = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.00922 * 1.5,
-          longitudeDelta: 0.00421 * 1.5,
-        };
-      });
-    }
-  };
-
-  const handleUpdateLocation = async () => {
-    const uid = firebase.auth().currentUser.uid;
-    const email = firebase.auth().currentUser.email;
-    const ref = firebase.database().ref(`/users/${uid}`);
-    setTimeout(async () => {
-      await ref.set({
-        email,
-        uid,
-        displayName,
-        latitude,
-        longitude,
-        imageURL,
-        birthday,
-        biodata,
-        phoneNumber,
-      });
-      ToastAndroid.showWithGravity(
-        'Location Updated',
-        ToastAndroid.SHORT,
-        ToastAndroid.BOTTOM,
-      );
-    }, 2000);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.profileNavbarContainer}>
-        <TouchableOpacity onPress={setupProfileHandler} activeOpacity={0.5}>
-          <Icon name="gear" style={styles.navbarIcon} />
+        <TouchableOpacity onPress={backIconHanlder} activeOpacity={0.5}>
+          <Icon name="arrow-left" style={styles.navbarIcon} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={signOutHandler} activeOpacity={0.5}>
-          <Icon name="sign-out" style={styles.navbarIcon} />
+        <TouchableOpacity onPress={chatIconHandler} activeOpacity={0.5}>
+          <Icon name="comment-o" style={styles.navbarIcon} />
         </TouchableOpacity>
       </View>
       <View style={styles.headerContainer}>
-        <Text style={styles.displayName}>Hi, {displayName}</Text>
-        <Text style={styles.displayLocation} onPress={handleUpdateLocation}>
-          <Icon name="map-marker" size={20} /> Tap Here to Update Location
+        <Text style={styles.displayName}>{displayName}</Text>
+        <Text style={styles.displayLocation}>
+          <Icon name="map-marker" size={20} /> My Location
         </Text>
         {(latitude && longitude === '') || undefined || null ? (
           <Text style={styles.displayLocation}>

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -11,7 +12,7 @@ import {
 // import {useNavigation} from '@react-navigation/native';
 import * as firebase from 'firebase';
 
-const Register = props => {
+const Register = (props) => {
   // const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ const Register = props => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
+      .then((userCredentials) => {
         return userCredentials.user.updateProfile({
           displayName: fullname,
         });
@@ -36,18 +37,24 @@ const Register = props => {
         const uid = await firebase.auth().currentUser.uid;
         const email = await firebase.auth().currentUser.email;
         const ref = await firebase.database().ref(`/users/${uid}`);
+        const imageURL =
+          'https://www.securities-services.societegenerale.com/uploads/tx_bisgbio/default-profile.png';
         await ref.set({
           uid: uid,
           email: email,
           displayName: fullname,
-          imageURL:
-            'https://www.securities-services.societegenerale.com/uploads/tx_bisgbio/default-profile.png',
+          imageURL: imageURL,
+          latitude: -7.7584874,
+          longitude: 110.3781121,
+          phoneNumber: '',
+          birthday: '',
+          biodata: '',
         });
       })
       .then(() => {
         props.navigation.navigate('Profile');
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         setErrorMessage(error.message);
       });
@@ -74,7 +81,7 @@ const Register = props => {
       <View style={styles.formContainer}>
         <TextInput
           value={fullname}
-          onChangeText={value => {
+          onChangeText={(value) => {
             setFullname(value);
           }}
           style={styles.inputForm}
@@ -82,7 +89,7 @@ const Register = props => {
         />
         <TextInput
           value={email}
-          onChangeText={value => {
+          onChangeText={(value) => {
             setEmail(value);
           }}
           style={styles.inputForm}
@@ -90,7 +97,7 @@ const Register = props => {
         />
         <TextInput
           value={password}
-          onChangeText={value => {
+          onChangeText={(value) => {
             setPassword(value);
           }}
           style={styles.inputForm}
