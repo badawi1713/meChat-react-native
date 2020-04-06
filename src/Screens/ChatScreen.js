@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-did-mount-set-state */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
@@ -32,8 +33,6 @@ class ChatScreen extends Component {
       friendName: '',
       friendUrl: '',
       friendStatus: '',
-
-      lastSeen: '',
     };
     this.getUser();
     this.getChat();
@@ -60,21 +59,6 @@ class ChatScreen extends Component {
       this.setState({
         friendName: `${snapshot.val().displayName}`,
         friendUrl: `${snapshot.val().imageURL}`,
-        friendStatus: `${snapshot.val().status}`,
-      });
-    });
-  };
-
-  getLastSeen = async () => {
-    const friendUID = await this.props.navigation.getParam('uid');
-    const ref = firebase.database().ref(`/users/${friendUID}`);
-    ref.on('value', async (snapshot) => {
-      const date1 = new Date();
-      const date2 = new Date(snapshot.val().last_seen);
-      var res = Math.abs(date1 - date2) / 1000;
-      var minutes = Math.floor(res / 60) % 60;
-      this.setState({
-        lastSeen: `${minutes}`,
         friendStatus: `${snapshot.val().status}`,
       });
     });
@@ -133,7 +117,6 @@ class ChatScreen extends Component {
   }
 
   interval = 0;
-  lastSeenInterval = 0;
 
   async componentDidMount() {
     const friendUID = await this.props.navigation.getParam('uid');
@@ -143,18 +126,13 @@ class ChatScreen extends Component {
     await this.getUser();
     this.getChat();
     this.getFriendUser();
-    // this.getLastSeen();
     this.interval = setInterval(() => {
       this.getChat();
     }, 2000);
-    // this.lastSeenInterval = setInterval(() => {
-    //   this.getLastSeen();
-    // }, 30000);
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
-    clearInterval(this.lastSeenInterval);
   }
 
   renderSend(props) {

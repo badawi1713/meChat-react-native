@@ -161,7 +161,6 @@ const SetupProfile = (props) => {
             confirmBtnText="Confirm"
             cancelBtnText="Cancel"
             showIcon={true}
-            // eslint-disable-next-line prettier/prettier
             onDateChange={(date) => {
               setBirthday(date);
             }}
