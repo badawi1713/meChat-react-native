@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 // import {useNavigation} from '@react-navigation/native';
 import * as firebase from 'firebase';
@@ -36,77 +37,77 @@ const Login = props => {
       });
   };
   return (
-    <SafeAreaView style={styles.loginContainer}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.imageIcon}
-          source={require('../../assets/small-icon.png')}
-        />
-      </View>
-      <View style={styles.headerContainer}>
-        <Text style={{fontSize: 36}}>Welcome,</Text>
-        <Text style={{fontSize: 17, color: '#262626'}}>
-          Please sign in to continue using MeChat
-        </Text>
-      </View>
-      <View style={styles.errorMessage}>
-        {/* {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>} */}
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      </View>
-      <View style={styles.formContainer}>
-        <TextInput
-          value={email}
-          autoCapitalize="none"
-          style={styles.inputForm}
-          placeholder="Email"
-          onChangeText={value => {
-            setEmail(value);
-          }}
-        />
-        <TextInput
-          value={password}
-          style={styles.inputForm}
-          placeholder="Password"
-          secureTextEntry={true}
-          autoCapitalize="none"
-          onChangeText={value => {
-            setPassword(value);
-          }}
-        />
-      </View>
-      <View style={styles.forgotPasswordText}>
-        {/* <Text>{''}</Text> */}
-        <Text style={{textAlign: 'right', fontSize: 16}}>Forgot Password?</Text>
-      </View>
-      <View style={styles.loginButtonContainer}>
-        <TouchableOpacity style={styles.loginButton} onPress={loginHandler}>
-          <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
-            Sign In
+    <ScrollView
+      style={{backgroundColor: '#fff'}}
+      showsVerticalScrollIndicator={false}>
+      <SafeAreaView style={styles.loginContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.imageIcon}
+            source={require('../../assets/small-icon.png')}
+          />
+        </View>
+        <View style={styles.headerContainer}>
+          <Text style={{fontSize: 36}}>Welcome,</Text>
+          <Text style={{fontSize: 17, color: '#262626'}}>
+            Please sign in to continue using MeChat
           </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.signUpLinkContainer}>
-        <Text style={{fontSize: 16, color: '#B2B2B2'}}>
-          Don't have an account?
-        </Text>
-        <Text
-          style={{fontSize: 16}}
-          onPress={() => {
-            setEmail('');
-            setPassword('');
-            setErrorMessage(null);
-            signUpButtonHandler();
-          }}>
-          Sign Up
-        </Text>
-      </View>
-      <View style={styles.circleImageContainer}>
-        <Image
-          style={styles.circleImage}
-          source={require('../../assets/bottom-circle.png')}
-        />
-      </View>
-    </SafeAreaView>
+        </View>
+        <View style={styles.errorMessage}>
+          {/* {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>} */}
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        </View>
+        <View style={styles.formContainer}>
+          <TextInput
+            value={email}
+            autoCapitalize="none"
+            style={styles.inputForm}
+            placeholder="Email"
+            onChangeText={value => {
+              setEmail(value);
+            }}
+          />
+          <TextInput
+            value={password}
+            style={styles.inputForm}
+            placeholder="Password"
+            secureTextEntry={true}
+            autoCapitalize="none"
+            onChangeText={value => {
+              setPassword(value);
+            }}
+          />
+        </View>
+        <View style={styles.forgotPasswordText}>
+          {/* <Text>{''}</Text> */}
+          <Text style={{textAlign: 'right', fontSize: 16}}>
+            Forgot Password?
+          </Text>
+        </View>
+        <View style={styles.loginButtonContainer}>
+          <TouchableOpacity style={styles.loginButton} onPress={loginHandler}>
+            <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
+              Sign In
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpLinkContainer}>
+          <Text style={{fontSize: 16, color: '#B2B2B2'}}>
+            Don't have an account?
+          </Text>
+          <Text
+            style={{fontSize: 16}}
+            onPress={() => {
+              setEmail('');
+              setPassword('');
+              setErrorMessage(null);
+              signUpButtonHandler();
+            }}>
+            Sign Up
+          </Text>
+        </View>
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -17,7 +17,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 import * as firebase from 'firebase';
 
-const ProfileScreen = (props) => {
+const ProfileScreen = props => {
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -53,7 +53,7 @@ const ProfileScreen = (props) => {
   const getUserData = () => {
     const uid = firebase.auth().currentUser.uid;
     let ref = firebase.database().ref(`/users/${uid}`);
-    ref.on('value', (snapshot) => {
+    ref.on('value', snapshot => {
       setImageURL(snapshot.val() != null || '' ? snapshot.val().imageURL : '');
       setEmail(snapshot.val() != null || '' ? snapshot.val().email : '');
       setBirthday(snapshot.val() != null || '' ? snapshot.val().birthday : '');
@@ -74,7 +74,7 @@ const ProfileScreen = (props) => {
     );
     if (granted) {
       await Geolocation.getCurrentPosition(
-        async (position) => {
+        async position => {
           console.log('Current Location', JSON.stringify(position));
           // await this.setState({
           //   latitude: position.coords.latitude.toString(),
@@ -83,7 +83,7 @@ const ProfileScreen = (props) => {
           setLatitude(position.coords.latitude.toString());
           setLongitude(position.coords.longitude.toString());
         },
-        (error) => {
+        error => {
           console.log(error.code, error.message);
         },
         {
@@ -93,7 +93,7 @@ const ProfileScreen = (props) => {
         },
       );
 
-      this.watchID = Geolocation.watchPosition((position) => {
+      this.watchID = Geolocation.watchPosition(position => {
         let region = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -166,8 +166,10 @@ const ProfileScreen = (props) => {
           )}
         </View>
       </View>
-      <View style={styles.profileContent}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.profileContent}
+        showsVerticalScrollIndicator={false}>
+        <View>
           <View>
             <View style={styles.profileItems}>
               <View
@@ -262,8 +264,8 @@ const ProfileScreen = (props) => {
               )}
             </View>
           </View>
-        </ScrollView>
-      </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -165,24 +165,42 @@ export default class Map extends Component {
               </Text>
 
               <View style={{flexDirection: 'row'}}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.push('FriendProfile', {
-                      uid: this.state.uid,
-                    })
-                  }
-                  style={{
-                    marginTop: 10,
-                    backgroundColor: '#FFD700',
-                    width: 80,
-                    height: 30,
-                    borderRadius: 20,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginRight: 10,
-                  }}>
-                  <Text style={{color: 'black', fontSize: 16}}>Profile</Text>
-                </TouchableOpacity>
+                {this.state.uid === this.state.userUID ? (
+                  <TouchableOpacity
+                    onPress={() => this.props.navigation.push('Profile')}
+                    style={{
+                      marginTop: 10,
+                      backgroundColor: '#FFD700',
+                      width: 80,
+                      height: 30,
+                      borderRadius: 20,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: 10,
+                    }}>
+                    <Text style={{color: 'black', fontSize: 16}}>Profile</Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity
+                    onPress={() =>
+                      this.props.navigation.push('FriendProfile', {
+                        uid: this.state.uid,
+                      })
+                    }
+                    style={{
+                      marginTop: 10,
+                      backgroundColor: '#FFD700',
+                      width: 80,
+                      height: 30,
+                      borderRadius: 20,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginRight: 10,
+                    }}>
+                    <Text style={{color: 'black', fontSize: 16}}>Profile</Text>
+                  </TouchableOpacity>
+                )}
+
                 {this.state.uid === this.state.userUID ? null : (
                   <TouchableOpacity
                     onPress={() =>

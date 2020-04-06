@@ -51,6 +51,9 @@ const MapStack = createStackNavigator(
     FriendProfile: {
       screen: FriendProfileScreen,
     },
+    Profile: {
+      screen: ProfileScreen,
+    },
     Chat: {
       screen: ChatScreen,
     },

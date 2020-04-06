@@ -9,11 +9,12 @@ import {
   Text,
   Image,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 // import {useNavigation} from '@react-navigation/native';
 import * as firebase from 'firebase';
 
-const Register = (props) => {
+const Register = props => {
   // const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
@@ -29,7 +30,7 @@ const Register = (props) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
+      .then(userCredentials => {
         return userCredentials.user.updateProfile({
           displayName: fullname,
         });
@@ -55,82 +56,86 @@ const Register = (props) => {
       .then(() => {
         props.navigation.navigate('Profile');
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         setErrorMessage(error.message);
       });
   };
 
   return (
-    <SafeAreaView style={styles.registerContainer}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.imageIcon}
-          source={require('../../assets/small-icon.png')}
-        />
-      </View>
-      <View style={styles.headerContainer}>
-        <Text style={{fontSize: 36}}>Sign Up</Text>
-        <Text style={{fontSize: 17, color: '#262626'}}>
-          Register for new user
-        </Text>
-      </View>
-      <View style={styles.errorMessage}>
-        {/* {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>} */}
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      </View>
-      <View style={styles.formContainer}>
-        <TextInput
-          value={fullname}
-          onChangeText={(value) => {
-            setFullname(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Fullname"
-        />
-        <TextInput
-          value={email}
-          onChangeText={(value) => {
-            setEmail(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Email"
-        />
-        <TextInput
-          value={password}
-          onChangeText={(value) => {
-            setPassword(value);
-          }}
-          style={styles.inputForm}
-          placeholder="Password"
-          secureTextEntry={true}
-        />
-      </View>
-
-      <View style={styles.registerButtonContainer}>
-        <TouchableOpacity
-          style={styles.registerButton}
-          onPress={registerHandler}>
-          <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
-            Register
+    <ScrollView
+      style={{backgroundColor: '#fff'}}
+      showsVerticalScrollIndicator={false}>
+      <SafeAreaView style={styles.registerContainer}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.imageIcon}
+            source={require('../../assets/small-icon.png')}
+          />
+        </View>
+        <View style={styles.headerContainer}>
+          <Text style={{fontSize: 36}}>Sign Up</Text>
+          <Text style={{fontSize: 17, color: '#262626'}}>
+            Register for new user
           </Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.signUpLinkContainer}>
-        <Text style={{fontSize: 16, color: '#B2B2B2'}}>
-          Already have an account?
-        </Text>
-        <Text style={{fontSize: 16}} onPress={signInButtonHandler}>
-          Sign In
-        </Text>
-      </View>
-      <View style={styles.circleImageContainer}>
-        <Image
-          style={styles.circleImage}
-          source={require('../../assets/bottom-circle.png')}
-        />
-      </View>
-    </SafeAreaView>
+        </View>
+        <View style={styles.errorMessage}>
+          {/* {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>} */}
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        </View>
+        <View style={styles.formContainer}>
+          <TextInput
+            value={fullname}
+            onChangeText={value => {
+              setFullname(value);
+            }}
+            style={styles.inputForm}
+            placeholder="Fullname"
+          />
+          <TextInput
+            value={email}
+            onChangeText={value => {
+              setEmail(value);
+            }}
+            style={styles.inputForm}
+            placeholder="Email"
+          />
+          <TextInput
+            value={password}
+            onChangeText={value => {
+              setPassword(value);
+            }}
+            style={styles.inputForm}
+            placeholder="Password"
+            secureTextEntry={true}
+          />
+        </View>
+
+        <View style={styles.registerButtonContainer}>
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={registerHandler}>
+            <Text style={{color: '#fff', fontSize: 20, textAlign: 'center'}}>
+              Register
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.signUpLinkContainer}>
+          <Text style={{fontSize: 16, color: '#B2B2B2'}}>
+            Already have an account?
+          </Text>
+          <Text style={{fontSize: 16}} onPress={signInButtonHandler}>
+            Sign In
+          </Text>
+        </View>
+        {/* <View style={styles.circleImageContainer}>
+          <Image
+            style={styles.circleImage}
+            source={require('../../assets/bottom-circle.png')}
+          />
+        </View> */}
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 

@@ -17,7 +17,7 @@ import Geolocation from 'react-native-geolocation-service';
 
 import * as firebase from 'firebase';
 
-const ProfileScreen = (props) => {
+const ProfileScreen = props => {
   const [email, setEmail] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [longitude, setLongitude] = useState('');
@@ -27,11 +27,10 @@ const ProfileScreen = (props) => {
   const [birthday, setBirthday] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [biodata, setBiodata] = useState('');
-  const [friendUID, setFriendUID] = useState('');
 
   useEffect(() => {
-    const {displayName} = firebase.auth().currentUser;
-    setDisplayName(displayName);
+    // const {displayName} = firebase.auth().currentUser;
+    // setDisplayName(displayName);
     getFriendData();
     // updateLocation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,7 +49,10 @@ const ProfileScreen = (props) => {
   const getFriendData = () => {
     const uid = props.navigation.getParam('uid');
     let ref = firebase.database().ref(`/users/${uid}`);
-    ref.on('value', (snapshot) => {
+    ref.on('value', snapshot => {
+      setDisplayName(
+        snapshot.val() != null || '' ? snapshot.val().displayName : '',
+      );
       setImageURL(snapshot.val() != null || '' ? snapshot.val().imageURL : '');
       setEmail(snapshot.val() != null || '' ? snapshot.val().email : '');
       setBirthday(snapshot.val() != null || '' ? snapshot.val().birthday : '');
@@ -103,104 +105,104 @@ const ProfileScreen = (props) => {
           )}
         </View>
       </View>
-      <View style={styles.profileContent}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-            <View style={styles.profileItems}>
-              <View
+      <ScrollView
+        style={styles.profileContent}
+        showsVerticalScrollIndicator={false}>
+        <View>
+          <View style={styles.profileItems}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#FFD700',
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon
                 style={{
-                  width: 40,
-                  height: 40,
-                  backgroundColor: '#FFD700',
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Icon
-                  style={{
-                    fontSize: 18,
-                  }}
-                  name="envelope"
-                />
-              </View>
-              {email === '' || undefined ? (
-                <Text style={{fontSize: 18}}>undefined</Text>
-              ) : (
-                <Text style={{fontSize: 18}}>{email}</Text>
-              )}
+                  fontSize: 18,
+                }}
+                name="envelope"
+              />
             </View>
-            <View style={styles.profileItems}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  backgroundColor: '#FFD700',
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Icon
-                  style={{
-                    fontSize: 18,
-                  }}
-                  name="calendar"
-                />
-              </View>
-              {birthday === '' || undefined ? (
-                <Text style={{fontSize: 18}}>undefined</Text>
-              ) : (
-                <Text style={{fontSize: 18}}>{birthday}</Text>
-              )}
-            </View>
-            <View style={styles.profileItems}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  backgroundColor: '#FFD700',
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Icon
-                  style={{
-                    fontSize: 18,
-                  }}
-                  name="phone"
-                />
-              </View>
-              {phoneNumber === '' || undefined ? (
-                <Text style={{fontSize: 18}}>undefined</Text>
-              ) : (
-                <Text style={{fontSize: 18}}>{phoneNumber}</Text>
-              )}
-            </View>
-            <View style={styles.profileItems}>
-              <View
-                style={{
-                  width: 40,
-                  height: 40,
-                  backgroundColor: '#FFD700',
-                  borderRadius: 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Icon
-                  style={{
-                    fontSize: 18,
-                  }}
-                  name="info"
-                />
-              </View>
-              {biodata === '' || undefined ? (
-                <Text style={{fontSize: 18}}>undefined</Text>
-              ) : (
-                <Text style={{fontSize: 18}}>{biodata}</Text>
-              )}
-            </View>
+            {email === '' || undefined ? (
+              <Text style={{fontSize: 18}}>undefined</Text>
+            ) : (
+              <Text style={{fontSize: 18}}>{email}</Text>
+            )}
           </View>
-        </ScrollView>
-      </View>
+          <View style={styles.profileItems}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#FFD700',
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon
+                style={{
+                  fontSize: 18,
+                }}
+                name="calendar"
+              />
+            </View>
+            {birthday === '' || undefined ? (
+              <Text style={{fontSize: 18}}>undefined</Text>
+            ) : (
+              <Text style={{fontSize: 18}}>{birthday}</Text>
+            )}
+          </View>
+          <View style={styles.profileItems}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#FFD700',
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon
+                style={{
+                  fontSize: 18,
+                }}
+                name="phone"
+              />
+            </View>
+            {phoneNumber === '' || undefined ? (
+              <Text style={{fontSize: 18}}>undefined</Text>
+            ) : (
+              <Text style={{fontSize: 18}}>{phoneNumber}</Text>
+            )}
+          </View>
+          <View style={styles.profileItems}>
+            <View
+              style={{
+                width: 40,
+                height: 40,
+                backgroundColor: '#FFD700',
+                borderRadius: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon
+                style={{
+                  fontSize: 18,
+                }}
+                name="info"
+              />
+            </View>
+            {biodata === '' || undefined ? (
+              <Text style={{fontSize: 18}}>undefined</Text>
+            ) : (
+              <Text style={{fontSize: 18}}>{biodata}</Text>
+            )}
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
