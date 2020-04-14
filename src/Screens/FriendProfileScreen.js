@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
+
 import React, {useState, useEffect} from 'react';
 // import React, {Component} from 'react';
 import {

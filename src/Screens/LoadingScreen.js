@@ -12,7 +12,7 @@ const LoadingScreen = props => {
   }, []);
   return (
     <View style={styles.container}>
-      <Text>Loading ...</Text>
+      <Text style={styles.loadingText}>Loading ...</Text>
       <ActivityIndicator size="large" />
     </View>
   );
@@ -25,5 +25,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  loadingText: {
+    paddingTop: 20,
   },
 });

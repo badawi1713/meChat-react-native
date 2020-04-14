@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -53,6 +54,10 @@ const Login = props => {
             Please sign in to continue using MeChat
           </Text>
         </View>
+
+        {/* <View style={styles.primaryCircle} />
+        <View style={styles.secondaryCircle} /> */}
+
         <View style={styles.errorMessage}>
           {/* {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>} */}
           <Text style={styles.errorText}>{errorMessage}</Text>
@@ -190,5 +195,23 @@ const styles = StyleSheet.create({
     top: 10,
     width: 260,
     height: '100%',
+  },
+  primaryCircle: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#262626',
+    position: 'absolute',
+    top: 110,
+    right: -40,
+  },
+  secondaryCircle: {
+    width: 90,
+    height: 90,
+    borderRadius: 45,
+    backgroundColor: '#FFD700',
+    position: 'absolute',
+    top: 130,
+    right: 20,
   },
 });

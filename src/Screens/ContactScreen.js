@@ -1,3 +1,5 @@
+/* eslint-disable dot-notation */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React, {Component} from 'react';
@@ -26,19 +28,19 @@ export default class Contact extends Component {
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref('users');
 
-    await ref.on('value', async (snapshot) => {
+    await ref.on('value', async snapshot => {
       let data = [];
       let data2 = [];
       let data3 = [];
       let data4 = {};
-      await Object.keys(snapshot.val()).map(async (key) => {
+      await Object.keys(snapshot.val()).map(async key => {
         const friendUID = snapshot.val()[key].uid;
         const noRead = [];
         let x = [];
         const ref2 = firebase.database().ref(`/chat/${friendUID}/${uid}/`);
-        await ref2.on('value', async (snapshot) => {
+        await ref2.on('value', async snapshot => {
           if (snapshot.val() !== null) {
-            await Object.keys(snapshot.val()).map((key) => {
+            await Object.keys(snapshot.val()).map(key => {
               if (snapshot.val()[key].isRead !== undefined) {
                 noRead.push(snapshot.val()[key].isRead);
                 console.log('READDDD', snapshot.val()[key].isRead);
@@ -77,12 +79,12 @@ export default class Contact extends Component {
     });
   };
 
-  handleChat = async (friendUID) => {
+  handleChat = async friendUID => {
     const uid = firebase.auth().currentUser.uid;
     const ref = firebase.database().ref(`/chat/${friendUID}/${uid}/`);
-    ref.on('value', async (snapshot) => {
+    ref.on('value', async snapshot => {
       if (Object.keys(snapshot.val()) != null) {
-        await Object.keys(snapshot.val()).map(async (key) => {
+        await Object.keys(snapshot.val()).map(async key => {
           const ref2 = firebase
             .database()
             .ref(`/chat/${friendUID}/${uid}/${key}/isRead`);
@@ -117,7 +119,7 @@ export default class Contact extends Component {
           <Text style={{fontSize: 24, color: '#000'}}>My Contact</Text>
         </View>
         <ScrollView style={{flex: 0.5}}>
-          {this.state.data.map((data) => {
+          {this.state.data.map(data => {
             const {userUID} = this.state;
             return userUID === data.uid ? null : (
               <TouchableOpacity
@@ -162,7 +164,7 @@ export default class Contact extends Component {
 
                 <View>
                   <Text style={{fontSize: 16}}>{data.data.displayName}</Text>
-                  <View style={{flexDirection: 'row'}}></View>
+                  <View style={{flexDirection: 'row'}} />
                 </View>
                 {this.state.data2[`${data.data.uid}`] != null ? (
                   <View
